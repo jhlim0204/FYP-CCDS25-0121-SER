@@ -194,6 +194,7 @@ df = df.dropna(subset=['text'])
 df['text'] = df['text'].apply(lambda x: clean_text(x))
 df = df[df['text'] != ""]
 
+df['id'] = df['id'].str[:-4]
 cols = [
         "gender", "emotion", "valence", "arousal", "dominance", 
         "duration", "path", "text", "id", "split"

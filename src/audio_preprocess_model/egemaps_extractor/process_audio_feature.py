@@ -1,9 +1,20 @@
 import pandas as pd
 import os
 import numpy as np
-from configs.dataset_config import FEATURE_RENAMING_MAPS, DATASET_PROMPT_GROUPS, EXTRACTED_FEATURE_SET
+from configs.dataset_config import FEATURE_RENAMING_MAPS, DATASET_PROMPT_GROUPS, EXTRACTED_FEATURE_SET, PRECOMPUTED_THRESHOLDS, PRECOMPUTED_STATS
 
-def extract_thresholds_and_stats(df, dataset, num_classes):
+def extract_thresholds_and_stats(df, dataset, num_classes, compute_manual=True):
+    if not compute_manual:
+        if dataset not in PRECOMPUTED_THRESHOLDS:
+            raise ValueError(
+                f"Precomputed thresholds missing for dataset '{dataset}' in configs.dataset_config"
+            )
+        if dataset not in PRECOMPUTED_STATS:
+            raise ValueError(
+                f"Precomputed stats missing for dataset '{dataset}' in configs.dataset_config"
+            )
+            
+        return PRECOMPUTED_THRESHOLDS[dataset], PRECOMPUTED_STATS[dataset]
     
     features = EXTRACTED_FEATURE_SET[dataset]
     thresholds = {}
@@ -61,19 +72,33 @@ def categorize(value, thresholds, num_classes):
 
 def standardize_and_process_df(df, thresholds, stats, num_classes):
     features = list(thresholds['overall'].keys())
+
+    def _get_gender_key(row):
+        if use_pred_gender:
+            gender_prob = row.get('gender_probability', np.nan)
+            if not pd.isna(gender_prob) and 0.2 <= gender_prob <= 0.8:
+                return 'overall'
+            
+            key = row.get('pred_gender', np.nan)
+            else:
+                key = row.get('gender', np.nan)
+            
+        if pd.isna(key) or key not in stats:
+            return 'overall'
+        return key
     
     # Standardize features
     for feature in features:
         df[f'{feature}_standardized'] = df.apply(lambda row: 
-            (row[feature] - stats.get(row['gender'], stats['overall'])[feature]['mean']) / 
-            stats.get(row['gender'], stats['overall'])[feature]['std']
+            (row[feature] - stats.get(_get_gender_key(row), stats['overall'])[feature]['mean']) / 
+            stats.get(_get_gender_key(row), stats['overall'])[feature]['std']
         if not pd.isna(row[feature]) and row[feature] != 0 else np.nan, axis=1)
     
     # Categorize original features
     for feature in features:
         df[f'{feature}_category'] = df.apply(lambda row: categorize(
             row[feature], 
-            thresholds.get(row['gender'], thresholds['overall'])[feature],
+            thresholds.get(_get_gender_key(row), thresholds['overall'])[feature],
             num_classes
         ), axis=1)
     
@@ -159,6 +184,8 @@ def add_one_line_convo(processed_df):
         processed_df['Pitch Stability (StdDev)_category'] + " variation)  ### \n"
     )
     
+    return processed_df
+
 def prepare_and_save_json(df, dataset, output_path):
     print(f"Processing {len(df)} rows...")
     final_columns = {} # Dict to map {Old_Name : New_Name}
@@ -171,7 +198,7 @@ def prepare_and_save_json(df, dataset, output_path):
     final_columns['emotion'] = 'output'
     final_columns['path'] = 'path'
     final_columns['history_context'] = 'history_context'
-
+    
     if 'pred_valence' in df.columns: 
         df.drop(columns=['valence'], inplace=True)
         final_columns['pred_valence'] = 'valence'

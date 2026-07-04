@@ -97,7 +97,7 @@ def preprocess_msp_audeering(input_path, output_data_path, generate_oof=True):
     d_col = FIELD_MAP['dominance']
         
     target_cols = [a_col, d_col, v_col]
-    
+    os.makedirs(output_data_path, exist_ok=True)
     # 1. Load Data
     try:
         df = pd.read_csv(input_path)
