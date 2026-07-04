@@ -70,7 +70,10 @@ def categorize(value, thresholds, num_classes):
         else:
             return 'Very high'
 
-def standardize_and_process_df(df, thresholds, stats, num_classes):
+def standardize_and_process_df(df, thresholds, stats, num_classes, use_pred_gender=False):
+    """
+    Standardizes and processes the DataFrame with the given thresholds and stats.
+    """
     features = list(thresholds['overall'].keys())
 
     def _get_gender_key(row):
@@ -104,7 +107,7 @@ def standardize_and_process_df(df, thresholds, stats, num_classes):
     
     return df
 
-
+# For IEMOCAP
 def add_conversation_history(df, window_size=8):
     """
     Creates a 'history_str' for IEMOCAP using strict logic from data_process.py.
@@ -167,6 +170,7 @@ def add_conversation_history(df, window_size=8):
 
     return df
 
+# For MSP
 def add_one_line_convo(processed_df):
     # temp_content_str = 'The following noted between \'### ###\' is a single isolated utterance with its speech features attached. ### '
     # temp_content_str += f"\t Speaker_{row['gender']}: {row['transcription']}"
@@ -256,7 +260,7 @@ def prepare_and_save_json(df, dataset, output_path):
     
     print(f"Saved to {output_path}")
 
-def process_audio_feature(dataset, input_csv, output_path):    
+def process_audio_feature(dataset, input_csv, output_path, use_pred_gender=False):    
     output_train_json = os.path.join(output_path, 'train.json')
     output_test_json = os.path.join(output_path, 'test.json')
     

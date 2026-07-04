@@ -106,8 +106,8 @@ def main():
         
     if args.process_audio_feature:
         print("Processing eGeMaps")
-        process_audio_feature(args.dataset, feature_extraction_output_csv, args.feature_output_path)
-        # process_audio_feature(args.dataset, feature_extraction_output_csv, args.feature_output_path, args.use_pred_gender)
+        # process_audio_feature(args.dataset, feature_extraction_output_csv, args.feature_output_path)
+        process_audio_feature(args.dataset, feature_extraction_output_csv, args.feature_output_path, args.use_pred_gender)
     
     ## ASR
     if args.run_asr:

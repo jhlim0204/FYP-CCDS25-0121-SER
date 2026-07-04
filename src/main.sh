@@ -65,6 +65,7 @@ python main_preprocess_pipeline.py \
     --run_extractor \
     --feature_extraction_input_csv "$FEATURE_EXTRACTION_INPUT_CSV" \
     --process_audio_feature \
+    --use_pred_gender \
     --feature_input_csv "$FEATURE_INPUT_CSV" \
     --feature_output_path "$FEATURE_OUTPUT_PATH" \
     --run_asr \
