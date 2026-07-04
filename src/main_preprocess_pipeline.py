@@ -3,7 +3,7 @@ from audio_preprocess_model import (
     run_asr, run_gender_classifier_evaluation, 
     run_gender_classifier_inference, train_gender_classifier, 
     preprocess_iemocap_audeering, preprocess_msp_audeering, train_audeering, evaluate_audeering, inference_audeering,
-    extract_feature_opensmile, process_audio_feature, combine_file_before_feature_extraction
+    extract_feature_opensmile, process_audio_feature, combine_file_to_json
     )
 
 def main():
@@ -32,7 +32,7 @@ def main():
     parser.add_argument("--vad_output_path", type=str, help="path that stores vad prediction output file")
     
     parser.add_argument("--combine_files", action="store_true")
-    parser.add_argument("--combined_output_csv", type=str)
+    parser.add_argument("--combined_output_path", type=str)
     
     parser.add_argument("--run_extractor", action="store_true")
     parser.add_argument("--feature_extraction_input_csv", type=str)
@@ -43,6 +43,7 @@ def main():
     parser.add_argument("--feature_output_path", type=str, help="path that stores extracted feature output file into train and test json")
     
     parser.add_argument("--run_asr", action="store_true")
+    parser.add_argument("--use_asr_pred", action="store_true")
     parser.add_argument("--asr_model_id", default="openai/whisper-large-v3-turbo")
     parser.add_argument("--calc_wer", action="store_true")
     parser.add_argument("--normalize", action="store_true")
@@ -90,12 +91,7 @@ def main():
 
     else:
         vad_output_csv = f"{args.vad_output_path}/{args.dataset}_vad_eval_predictions.csv"
-        
-    ## Combine files
-    if args.combine_files:
-        print("Combining Files")
-        combine_file_before_feature_extraction(args.original_csv, args.gender_output_csv, vad_output_csv, args.combined_output_csv)
-        
+    
     ## eGeMaps Feature Extractor
     if args.run_extractor:
         print("Extracting eGeMaps Feature from audio")
@@ -103,11 +99,11 @@ def main():
 
     else:
         feature_extraction_output_csv = f"../data/{args.dataset}_dataset/{args.dataset}_dataset_egemaps_features.csv"
-        
-    if args.process_audio_feature:
-        print("Processing eGeMaps")
-        # process_audio_feature(args.dataset, feature_extraction_output_csv, args.feature_output_path)
-        process_audio_feature(args.dataset, feature_extraction_output_csv, args.feature_output_path, args.use_pred_gender)
+            
+    ## Combine & split files into train.json and test.json
+    if args.combine_files:
+        print("Combining Files")
+        combine_file_to_json(feature_extraction_output_csv, args.gender_output_csv, vad_output_csv, args.combined_output_path)
     
     ## ASR
     if args.run_asr:
@@ -119,6 +115,11 @@ def main():
             calc_wer=args.calc_wer,
             normalize_wer=args.normalize
         )
+        
+    if args.process_audio_feature:
+        print("Processing eGeMaps")
+        process_audio_feature(args.dataset, args.feature_output_path, args.use_pred_gender, args.use_asr_pred)  
+    
 
 if __name__ == "__main__":
     main()

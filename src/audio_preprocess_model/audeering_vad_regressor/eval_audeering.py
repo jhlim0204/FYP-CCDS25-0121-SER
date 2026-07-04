@@ -151,15 +151,21 @@ def collate_fn(EXTRACTOR_PATH, batch):
     return batch_dict
 
 
-def evaluate_audeering(EXTRACTOR_PATH, data_path, dataset, generate_oof=True):
+def evaluate_audeering(EXTRACTOR_PATH, data_path, dataset, generate_oof=True, Model_PATH=None):
     vad_output_file = f"{data_path}/{dataset}_vad_eval_predictions.csv"
+    if generate_oof and Model_PATH is not None:
+        raise ValueError("Cannot generate OOF predictions when a specific model path is provided.")
+    
     if generate_oof:
         ses_list = range(1,6)
     else:
         ses_list = [5]
     all_sessions_dfs = []
     for ses in ses_list:
-        MODEL_PATH = f"../checkpoints/wav2vec2_vad_{dataset}_final_model_ses{ses}" 
+        if Model_PATH is None:
+            MODEL_PATH = f"../checkpoints/wav2vec2_vad_{dataset}_final_model_ses{ses}" 
+        else:
+            MODEL_PATH = Model_PATH
         TEST_FILE = f"{data_path}/test_vad_ready_sess{ses}.json"    # Path to your processed test json
         
         print(f"Loading model from {MODEL_PATH}...")
@@ -254,15 +260,21 @@ def evaluate_audeering(EXTRACTOR_PATH, data_path, dataset, generate_oof=True):
     
     return vad_output_file
 
-def inference_audeering(EXTRACTOR_PATH, data_path, dataset, generate_oof=True):
+def inference_audeering(EXTRACTOR_PATH, data_path, dataset, generate_oof=True, Model_PATH=None):
     vad_output_file = f"{data_path}/{dataset}_vad_predictions.csv"
+    if generate_oof and Model_PATH is not None:
+        raise ValueError("Cannot generate OOF predictions when a specific model path is provided.")
+    
     if generate_oof:
         ses_list = range(1,6)
     else:
         ses_list = [5]
     all_sessions_dfs = []
     for ses in ses_list:
-        MODEL_PATH = f"../checkpoints/wav2vec2_vad_{dataset}_final_model_ses{ses}" 
+        if Model_PATH is None:
+            MODEL_PATH = f"../checkpoints/wav2vec2_vad_{dataset}_final_model_ses{ses}"
+        else:
+            MODEL_PATH = Model_PATH
         TEST_FILE = f"{data_path}/test_vad_ready_sess{ses}.json"    # Path to your processed test json
         
         print(f"Loading model from {MODEL_PATH}...")

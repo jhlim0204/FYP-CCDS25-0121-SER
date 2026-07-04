@@ -26,14 +26,11 @@ GENDER_OUTPUT_CSV="../data/${DATASET}_dataset/${DATASET}_gender_predictions.csv"
 VAD_INPUT_CSV=$ORIGINAL_CSV
 VAD_OUTPUT_PATH="../data/${DATASET}_dataset/${DATASET}_audeering_data_multiple"
 
-# --- Args for combine_file ---
-COMBINED_OUTPUT_CSV="../data/${DATASET}_dataset/${DATASET}_dataset_processed.csv"
-
-# --- Args for egemaps extractor ---
-# FEATURE_EXTRACTION_INPUT_CSV=$COMBINED_OUTPUT_CSV
+# --- Args for egemaps extraction ---
 FEATURE_EXTRACTION_INPUT_CSV=$ORIGINAL_CSV
-FEATURE_INPUT_CSV="../data/${DATASET}_dataset/${DATASET}_dataset_egemaps_features.csv"
-FEATURE_OUTPUT_PATH="../data/${DATASET}_dataset"
+
+# --- Args for combine_file ---
+COMBINED_OUTPUT_PATH="../data/${DATASET}_dataset"
 
 # --- Args for run_asr.py ---
 ASR_MODEL_ID="openai/whisper-large-v3-turbo"
@@ -41,6 +38,12 @@ ASR_MODEL_ID="openai/whisper-large-v3-turbo"
 # ASR_TRAIN_OUTPUT_JSON="../data/${DATASET}_dataset/train.json"
 ASR_TEST_INPUT_JSON="../data/${DATASET}_dataset/test.json"
 ASR_TEST_OUTPUT_JSON=$ASR_TEST_INPUT_JSON
+
+# --- Args for egemaps process ---
+FEATURE_INPUT_CSV="../data/${DATASET}_dataset/${DATASET}_dataset_egemaps_features.csv"
+FEATURE_OUTPUT_PATH="../data/${DATASET}_dataset"
+
+
 
 # ==============================================================================
 # 2. SCRIPT EXECUTION
@@ -61,11 +64,10 @@ python main_preprocess_pipeline.py \
     --vad_input_csv "$VAD_INPUT_CSV" \
     --vad_output_path "$VAD_OUTPUT_PATH" \
     --combine_files \
-    --combined_output_csv "$COMBINED_OUTPUT_CSV" \
+    --combined_output_path "$COMBINED_OUTPUT_PATH" \
     --run_extractor \
     --feature_extraction_input_csv "$FEATURE_EXTRACTION_INPUT_CSV" \
     --process_audio_feature \
-    --use_pred_gender \
     --feature_input_csv "$FEATURE_INPUT_CSV" \
     --feature_output_path "$FEATURE_OUTPUT_PATH" \
     --run_asr \

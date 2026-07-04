@@ -1,2 +1,2 @@
 from .extract_feature_opensmile import extract_feature_opensmile
-from .process_audio_feature import process_audio_feature
+from .process_audio_feature import process_audio_feature, process_custom_audio_feature
