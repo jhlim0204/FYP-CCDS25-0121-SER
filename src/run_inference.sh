@@ -5,6 +5,11 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
+export PYTHONPATH="$SRCIPT_DIR:$PYTHONPATH"
+
+export CC=$(which gcc)
+export CXX=$(which g++)
+
 # ==============================================================================
 # CLI ARGUMENTS
 # ==============================================================================
@@ -69,6 +74,7 @@ if [ ! -d "$LLM_CHECKPOINT" ]; then
     exit 1
 fi
 
+export CUDA_VISIBLE_DEVICES=0
 deepspeed --master_port=${PORT} LLM_code/main.py \
     --dataset ${DATASET} \
     --model_name_or_path "meta-llama/Meta-Llama-3-8B-Instruct" \
@@ -82,6 +88,10 @@ deepspeed --master_port=${PORT} LLM_code/main.py \
     --do_train False \
     --do_eval True \
     --zero_shot False \
+    --lora_dim ${LORA_DIM} \
+    --lora_alpha ${LORA_ALPHA} \
+    --lora_dropout ${LORA_DROPOUT_PROB} \
+    --max_mask_prob ${MAX_MASK_PROB} \
     --checkpoint_dir ${LLM_CHECKPOINT}
 
 echo -e "\nEnd-to-End Inference completed successfully! Results written to: $FINAL_DIR"

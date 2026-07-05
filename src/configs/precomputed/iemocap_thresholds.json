@@ -1,0 +1,584 @@
+{
+    "overall": {
+        "Average Pitch": {
+            "very_low": 24.037188,
+            "low": 27.607525,
+            "medium": 37.143118,
+            "high": 40.27235
+        },
+        "Pitch Stability (StdDev)": {
+            "very_low": 0.046661977,
+            "low": 0.07615237,
+            "medium": 0.155588595,
+            "high": 0.2010548
+        },
+        "Pitch Range (Dynamic Range)": {
+            "very_low": 1.9611969,
+            "low": 3.38165665,
+            "medium": 8.179727499999998,
+            "high": 12.053886
+        },
+        "Average Loudness": {
+            "very_low": 0.1108494968,
+            "low": 0.16466261,
+            "medium": 0.41269976,
+            "high": 0.61992564
+        },
+        "Overall Sound Level (dBP)": {
+            "very_low": -46.1918552,
+            "low": -40.58202,
+            "medium": -29.576742,
+            "high": -24.755140800000003
+        },
+        "Loudness Variation (StdDev)": {
+            "very_low": 0.501919536,
+            "low": 0.59940434,
+            "medium": 0.8361148,
+            "high": 0.96740304
+        },
+        "Avg. Loudness Increase Slope": {
+            "very_low": 1.10128526,
+            "low": 1.9094377,
+            "medium": 5.419864,
+            "high": 8.564266199999999
+        },
+        "Loudness Decrease Variability": {
+            "very_low": 0.57280845,
+            "low": 0.9793161,
+            "medium": 2.7204223,
+            "high": 4.166822580000001
+        },
+        "Speaking Rate": {
+            "very_low": 0.91463417,
+            "low": 1.4150944,
+            "medium": 2.69003485,
+            "high": 3.2786887
+        },
+        "Unvoiced Length Variation (Pause/Consonant Variability)": {
+            "very_low": 0.07890416880000002,
+            "low": 0.1360412775,
+            "medium": 0.374053605,
+            "high": 0.529220751
+        },
+        "Jitter (Voice Roughness)": {
+            "very_low": 0.0187088215,
+            "low": 0.023035320249999998,
+            "medium": 0.03521557325,
+            "high": 0.044026125000000006
+        },
+        "Shimmer (Voice Breathiness)": {
+            "very_low": 0.95271213,
+            "low": 1.0667797,
+            "medium": 1.3475153,
+            "high": 1.53705768
+        },
+        "Harmonics-to-Noise Ratio (Voice Clarity)": {
+            "very_low": 3.71206,
+            "low": 4.76839965,
+            "medium": 7.73723365,
+            "high": 9.00163
+        },
+        "Hammarberg Variation (Breathiness Stability)": {
+            "very_low": 0.20446423,
+            "low": 0.26556396000000004,
+            "medium": 0.39727783,
+            "high": 0.47205737
+        },
+        "Alpha Ratio (Spectral Balance - Voiced)": {
+            "very_low": -16.395716,
+            "low": -14.201552,
+            "medium": -9.2430095,
+            "high": -6.8617744
+        },
+        "Alpha Ratio (Spectral Balance - Unvoiced)": {
+            "very_low": -12.8033281,
+            "low": -11.4533,
+            "medium": -7.7936726,
+            "high": -5.802287700000001
+        },
+        "Low Freq Spectral Slope (Voiced)": {
+            "very_low": 0.0140327355,
+            "low": 0.0233638495,
+            "medium": 0.0434427865,
+            "high": 0.05155393
+        },
+        "Low Freq Spectral Slope (Unvoiced)": {
+            "very_low": -0.0071953223,
+            "low": -0.002175607,
+            "medium": 0.013501256,
+            "high": 0.022660794
+        },
+        "Overall Spectral Flux Variation": {
+            "very_low": 0.6237540300000001,
+            "low": 0.7664952,
+            "medium": 1.1205974,
+            "high": 1.3373543399999999
+        },
+        "Spectral Flux Variation (Voiced)": {
+            "very_low": 0.35714418,
+            "low": 0.47275884,
+            "medium": 0.750485925,
+            "high": 0.90800786
+        },
+        "F1 Frequency (Vowel Openness)": {
+            "very_low": 508.07138,
+            "low": 558.323245,
+            "medium": 718.45147,
+            "high": 775.4959
+        },
+        "F1 Amplitude (Relative to Pitch)": {
+            "very_low": -173.60136,
+            "low": -153.1221,
+            "medium": -99.84033,
+            "high": -78.99201920000002
+        },
+        "MFCC 1 (Overall Spectral Shape)": {
+            "very_low": 20.874990200000003,
+            "low": 23.682192,
+            "medium": 28.512163,
+            "high": 30.2921796
+        },
+        "MFCC 1 (Voiced Spectral Shape)": {
+            "very_low": 23.177456,
+            "low": 27.2179085,
+            "medium": 34.953489000000005,
+            "high": 37.5139
+        },
+        "MFCC 1 Variation (Overall)": {
+            "very_low": 0.22246155400000003,
+            "low": 0.2871501,
+            "medium": 0.45336348,
+            "high": 0.55567682
+        },
+        "MFCC 1 Variation (Voiced)": {
+            "very_low": 0.1354925,
+            "low": 0.19044765,
+            "medium": 0.32395767,
+            "high": 0.41325936
+        },
+        "MFCC 2 (Voiced Spectral Energy)": {
+            "very_low": -18.105318,
+            "low": -12.768519000000001,
+            "medium": -1.2418818,
+            "high": 3.0894926
+        },
+        "MFCC 4 (Overall High-Freq Detail)": {
+            "very_low": -20.7680464,
+            "low": -16.020569,
+            "medium": -7.8490496,
+            "high": -5.7184541200000005
+        },
+        "MFCC 4 (Voiced High-Freq Detail)": {
+            "very_low": -27.51913,
+            "low": -22.087725,
+            "medium": -8.57651325,
+            "high": -3.7752485
+        },
+        "valence": {
+            "very_low": 1.5,
+            "low": 2.0,
+            "medium": 3.5,
+            "high": 4.0
+        },
+        "arousal": {
+            "very_low": 2.0,
+            "low": 2.5,
+            "medium": 3.5,
+            "high": 4.0
+        },
+        "dominance": {
+            "very_low": 2.0,
+            "low": 2.5,
+            "medium": 4.0,
+            "high": 4.5
+        }
+    },
+    "F": {
+        "Average Pitch": {
+            "very_low": 32.3785346,
+            "low": 34.5922155,
+            "medium": 39.3976995,
+            "high": 42.0094908
+        },
+        "Pitch Stability (StdDev)": {
+            "very_low": 0.0406520561,
+            "low": 0.067424677,
+            "medium": 0.13291766500000002,
+            "high": 0.17164720100000003
+        },
+        "Pitch Range (Dynamic Range)": {
+            "very_low": 1.9397587,
+            "low": 3.295717725,
+            "medium": 7.892695375000001,
+            "high": 11.592647600000001
+        },
+        "Average Loudness": {
+            "very_low": 0.104290826,
+            "low": 0.16292421,
+            "medium": 0.43641297,
+            "high": 0.66987364
+        },
+        "Overall Sound Level (dBP)": {
+            "very_low": -46.902294,
+            "low": -40.85567,
+            "medium": -28.885365999999998,
+            "high": -23.7647086
+        },
+        "Loudness Variation (StdDev)": {
+            "very_low": 0.51003444,
+            "low": 0.6048966499999999,
+            "medium": 0.84759555,
+            "high": 0.977102224
+        },
+        "Avg. Loudness Increase Slope": {
+            "very_low": 1.05770398,
+            "low": 1.96086505,
+            "medium": 6.052084450000001,
+            "high": 9.725614800000002
+        },
+        "Loudness Decrease Variability": {
+            "very_low": 0.54117204,
+            "low": 0.952177175,
+            "medium": 2.86992625,
+            "high": 4.60850553
+        },
+        "Speaking Rate": {
+            "very_low": 0.9186995550000001,
+            "low": 1.440194625,
+            "medium": 2.7624311,
+            "high": 3.3333333
+        },
+        "Unvoiced Length Variation (Pause/Consonant Variability)": {
+            "very_low": 0.07485048200000001,
+            "low": 0.126210775,
+            "medium": 0.36023664499999997,
+            "high": 0.50489568
+        },
+        "Jitter (Voice Roughness)": {
+            "very_low": 0.0184323995,
+            "low": 0.022369292,
+            "medium": 0.034071462749999996,
+            "high": 0.0421465206
+        },
+        "Shimmer (Voice Breathiness)": {
+            "very_low": 0.935189501,
+            "low": 1.0379621499999998,
+            "medium": 1.28193505,
+            "high": 1.44658342
+        },
+        "Harmonics-to-Noise Ratio (Voice Clarity)": {
+            "very_low": 5.51010392,
+            "low": 6.6137327500000005,
+            "medium": 8.74611,
+            "high": 9.6271424
+        },
+        "Hammarberg Variation (Breathiness Stability)": {
+            "very_low": 0.224736755,
+            "low": 0.29092247,
+            "medium": 0.437144595,
+            "high": 0.50648244
+        },
+        "Alpha Ratio (Spectral Balance - Voiced)": {
+            "very_low": -16.677325500000002,
+            "low": -13.905851,
+            "medium": -8.41692075,
+            "high": -6.1078997600000005
+        },
+        "Alpha Ratio (Spectral Balance - Unvoiced)": {
+            "very_low": -12.8235215,
+            "low": -11.5549725,
+            "medium": -7.82849665,
+            "high": -5.869311219999999
+        },
+        "Low Freq Spectral Slope (Voiced)": {
+            "very_low": 0.0178065802,
+            "low": 0.028497639249999998,
+            "medium": 0.046459076249999995,
+            "high": 0.05421712100000001
+        },
+        "Low Freq Spectral Slope (Unvoiced)": {
+            "very_low": -0.00692818044,
+            "low": -0.0013012327499999999,
+            "medium": 0.0157746765,
+            "high": 0.024894200600000003
+        },
+        "Overall Spectral Flux Variation": {
+            "very_low": 0.633289376,
+            "low": 0.7861363800000001,
+            "medium": 1.1697853999999999,
+            "high": 1.3933203600000001
+        },
+        "Spectral Flux Variation (Voiced)": {
+            "very_low": 0.387065646,
+            "low": 0.50051275,
+            "medium": 0.8023804025,
+            "high": 0.9715947300000001
+        },
+        "F1 Frequency (Vowel Openness)": {
+            "very_low": 612.9042900000001,
+            "low": 660.519425,
+            "medium": 755.738245,
+            "high": 801.517615
+        },
+        "F1 Amplitude (Relative to Pitch)": {
+            "very_low": -173.065148,
+            "low": -152.22411499999998,
+            "medium": -96.14303000000001,
+            "high": -77.17711999999999
+        },
+        "MFCC 1 (Overall Spectral Shape)": {
+            "very_low": 20.0986062,
+            "low": 22.874291499999998,
+            "medium": 27.841548500000002,
+            "high": 29.6219864
+        },
+        "MFCC 1 (Voiced Spectral Shape)": {
+            "very_low": 21.381733500000003,
+            "low": 25.2182585,
+            "medium": 32.984172,
+            "high": 35.761009200000004
+        },
+        "MFCC 1 Variation (Overall)": {
+            "very_low": 0.21691491200000002,
+            "low": 0.280866085,
+            "medium": 0.441387905,
+            "high": 0.53353414
+        },
+        "MFCC 1 Variation (Voiced)": {
+            "very_low": 0.152034603,
+            "low": 0.2047878275,
+            "medium": 0.35586947,
+            "high": 0.46048037700000016
+        },
+        "MFCC 2 (Voiced Spectral Energy)": {
+            "very_low": -20.4358881,
+            "low": -15.108157250000001,
+            "medium": -3.80017015,
+            "high": 1.5339887500000005
+        },
+        "MFCC 4 (Overall High-Freq Detail)": {
+            "very_low": -22.547233,
+            "low": -18.707948000000002,
+            "medium": -9.750995750000001,
+            "high": -7.291614899999998
+        },
+        "MFCC 4 (Voiced High-Freq Detail)": {
+            "very_low": -29.714786099999998,
+            "low": -25.27354625,
+            "medium": -14.4444905,
+            "high": -8.790217699999982
+        },
+        "valence": {
+            "very_low": 1.5,
+            "low": 2.0,
+            "medium": 3.5,
+            "high": 4.0
+        },
+        "arousal": {
+            "very_low": 2.0,
+            "low": 2.5,
+            "medium": 3.5,
+            "high": 4.0
+        },
+        "dominance": {
+            "very_low": 2.3333,
+            "low": 2.5,
+            "medium": 4.0,
+            "high": 4.5
+        }
+    },
+    "M": {
+        "Average Pitch": {
+            "very_low": 22.543025800000002,
+            "low": 24.879399499999998,
+            "medium": 31.621014000000002,
+            "high": 35.4506028
+        },
+        "Pitch Stability (StdDev)": {
+            "very_low": 0.054421544,
+            "low": 0.0878128,
+            "medium": 0.175740905,
+            "high": 0.22626716200000002
+        },
+        "Pitch Range (Dynamic Range)": {
+            "very_low": 1.98738896,
+            "low": 3.4582100000000002,
+            "medium": 8.3650085,
+            "high": 12.6192082
+        },
+        "Average Loudness": {
+            "very_low": 0.115958116,
+            "low": 0.16645051249999998,
+            "medium": 0.3945057925,
+            "high": 0.5702277800000001
+        },
+        "Overall Sound Level (dBP)": {
+            "very_low": -45.515298900000005,
+            "low": -40.359232250000005,
+            "medium": -30.03836275,
+            "high": -25.5004633
+        },
+        "Loudness Variation (StdDev)": {
+            "very_low": 0.490376772,
+            "low": 0.59488245,
+            "medium": 0.823081085,
+            "high": 0.960313673
+        },
+        "Avg. Loudness Increase Slope": {
+            "very_low": 1.1317891,
+            "low": 1.86359665,
+            "medium": 5.0106853749999996,
+            "high": 7.397079660000001
+        },
+        "Loudness Decrease Variability": {
+            "very_low": 0.617661722,
+            "low": 1.0029056,
+            "medium": 2.5698242,
+            "high": 3.8005503800000002
+        },
+        "Speaking Rate": {
+            "very_low": 0.9090909,
+            "low": 1.388889,
+            "medium": 2.6490067,
+            "high": 3.2258065
+        },
+        "Unvoiced Length Variation (Pause/Consonant Variability)": {
+            "very_low": 0.083555194,
+            "low": 0.14542008499999998,
+            "medium": 0.38589783,
+            "high": 0.5501669120000001
+        },
+        "Jitter (Voice Roughness)": {
+            "very_low": 0.019085610000000003,
+            "low": 0.0237518805,
+            "medium": 0.036122009,
+            "high": 0.045443734
+        },
+        "Shimmer (Voice Breathiness)": {
+            "very_low": 0.97436454,
+            "low": 1.1022072,
+            "medium": 1.3974524,
+            "high": 1.60848426
+        },
+        "Harmonics-to-Noise Ratio (Voice Clarity)": {
+            "very_low": 3.15764308,
+            "low": 4.0564792,
+            "medium": 5.9218709,
+            "high": 6.879831480000001
+        },
+        "Hammarberg Variation (Breathiness Stability)": {
+            "very_low": 0.192006622,
+            "low": 0.24944914499999998,
+            "medium": 0.36034868,
+            "high": 0.41788032199999997
+        },
+        "Alpha Ratio (Spectral Balance - Voiced)": {
+            "very_low": -16.1988694,
+            "low": -14.3768525,
+            "medium": -10.1443805,
+            "high": -7.8694191
+        },
+        "Alpha Ratio (Spectral Balance - Unvoiced)": {
+            "very_low": -12.7818758,
+            "low": -11.33967475,
+            "medium": -7.755540825,
+            "high": -5.74624236
+        },
+        "Low Freq Spectral Slope (Voiced)": {
+            "very_low": 0.012247356800000003,
+            "low": 0.020394166,
+            "medium": 0.038829906,
+            "high": 0.0479747846
+        },
+        "Low Freq Spectral Slope (Unvoiced)": {
+            "very_low": -0.00727246185,
+            "low": -0.0030163417749999996,
+            "medium": 0.011193806375,
+            "high": 0.0199862583
+        },
+        "Overall Spectral Flux Variation": {
+            "very_low": 0.616332528,
+            "low": 0.7554178500000001,
+            "medium": 1.0702788749999999,
+            "high": 1.28293049
+        },
+        "Spectral Flux Variation (Voiced)": {
+            "very_low": 0.332135774,
+            "low": 0.44920504,
+            "medium": 0.700801,
+            "high": 0.8297321800000002
+        },
+        "F1 Frequency (Vowel Openness)": {
+            "very_low": 487.13752999999997,
+            "low": 520.52117,
+            "medium": 629.93237,
+            "high": 700.369762
+        },
+        "F1 Amplitude (Relative to Pitch)": {
+            "very_low": -174.46000600000002,
+            "low": -154.108145,
+            "medium": -102.40759125,
+            "high": -81.123925
+        },
+        "MFCC 1 (Overall Spectral Shape)": {
+            "very_low": 21.6976965,
+            "low": 24.54056375,
+            "medium": 29.00919475,
+            "high": 30.8464001
+        },
+        "MFCC 1 (Voiced Spectral Shape)": {
+            "very_low": 25.6484558,
+            "low": 29.8098485,
+            "medium": 36.1589945,
+            "high": 38.472804
+        },
+        "MFCC 1 Variation (Overall)": {
+            "very_low": 0.22862342800000002,
+            "low": 0.2941822325,
+            "medium": 0.46633770750000003,
+            "high": 0.567649435
+        },
+        "MFCC 1 Variation (Voiced)": {
+            "very_low": 0.124372936,
+            "low": 0.177701785,
+            "medium": 0.29749881,
+            "high": 0.367433934
+        },
+        "MFCC 2 (Voiced Spectral Energy)": {
+            "very_low": -15.324137,
+            "low": -10.0153645,
+            "medium": 0.320684175,
+            "high": 4.07092094
+        },
+        "MFCC 4 (Overall High-Freq Detail)": {
+            "very_low": -17.1923011,
+            "low": -12.53694125,
+            "medium": -6.8139499,
+            "high": -4.9791282699999995
+        },
+        "MFCC 4 (Voiced High-Freq Detail)": {
+            "very_low": -22.5288242,
+            "low": -16.3899785,
+            "medium": -5.768745,
+            "high": -2.199432279999999
+        },
+        "valence": {
+            "very_low": 2.0,
+            "low": 2.0,
+            "medium": 3.5,
+            "high": 4.0
+        },
+        "arousal": {
+            "very_low": 2.0,
+            "low": 2.5,
+            "medium": 3.5,
+            "high": 4.0
+        },
+        "dominance": {
+            "very_low": 2.0,
+            "low": 2.5,
+            "medium": 3.5,
+            "high": 4.0
+        }
+    }
+}

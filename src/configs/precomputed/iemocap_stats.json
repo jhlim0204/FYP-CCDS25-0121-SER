@@ -1,0 +1,392 @@
+{
+    "overall": {
+        "Average Pitch": {
+            "mean": 32.60481696767379,
+            "std": 6.165862339179576
+        },
+        "Pitch Stability (StdDev)": {
+            "mean": 0.11988835333191909,
+            "std": 0.062212747144603245
+        },
+        "Pitch Range (Dynamic Range)": {
+            "mean": 6.359690162274523,
+            "std": 4.268108731121711
+        },
+        "Average Loudness": {
+            "mean": 0.3333346105139154,
+            "std": 0.2731325354541251
+        },
+        "Overall Sound Level (dBP)": {
+            "mean": -35.01685865023511,
+            "std": 8.405599831755172
+        },
+        "Loudness Variation (StdDev)": {
+            "mean": 0.7256133501658406,
+            "std": 0.19261792159310762
+        },
+        "Avg. Loudness Increase Slope": {
+            "mean": 4.338209002772143,
+            "std": 3.889850079709632
+        },
+        "Loudness Decrease Variability": {
+            "mean": 2.1586902552491543,
+            "std": 1.901655115299048
+        },
+        "Speaking Rate": {
+            "mean": 2.0947420064332354,
+            "std": 0.9196064512281453
+        },
+        "Unvoiced Length Variation (Pause/Consonant Variability)": {
+            "mean": 0.277917682476097,
+            "std": 0.19851246016728744
+        },
+        "Jitter (Voice Roughness)": {
+            "mean": 0.030948440066760705,
+            "std": 0.017626284700817483
+        },
+        "Shimmer (Voice Breathiness)": {
+            "mean": 1.2372232259213727,
+            "std": 0.3077370915698609
+        },
+        "Harmonics-to-Noise Ratio (Voice Clarity)": {
+            "mean": 6.25308676589041,
+            "std": 2.0407554568982667
+        },
+        "Hammarberg Variation (Breathiness Stability)": {
+            "mean": 0.3356443260669569,
+            "std": 0.1133256983078544
+        },
+        "Alpha Ratio (Spectral Balance - Voiced)": {
+            "mean": -11.713262251405915,
+            "std": 3.7914719559455063
+        },
+        "Alpha Ratio (Spectral Balance - Unvoiced)": {
+            "mean": -9.488407526357989,
+            "std": 2.798388644001714
+        },
+        "Low Freq Spectral Slope (Voiced)": {
+            "mean": 0.033201806168584945,
+            "std": 0.01491041173562695
+        },
+        "Low Freq Spectral Slope (Unvoiced)": {
+            "mean": 0.006421692213940716,
+            "std": 0.012019453620613931
+        },
+        "Overall Spectral Flux Variation": {
+            "mean": 0.9635396883225313,
+            "std": 0.29643376521292136
+        },
+        "Spectral Flux Variation (Voiced)": {
+            "mean": 0.6226533676120856,
+            "std": 0.2234566922027245
+        },
+        "F1 Frequency (Vowel Openness)": {
+            "mean": 641.7322607963129,
+            "std": 102.11900026018196
+        },
+        "F1 Amplitude (Relative to Pitch)": {
+            "mean": -126.04210442267123,
+            "std": 35.53103519403312
+        },
+        "MFCC 1 (Overall Spectral Shape)": {
+            "mean": 25.890783378904562,
+            "std": 3.868145963019789
+        },
+        "MFCC 1 (Voiced Spectral Shape)": {
+            "mean": 30.82204098009218,
+            "std": 5.727836805418457
+        },
+        "MFCC 1 Variation (Overall)": {
+            "mean": 0.3825910161746092,
+            "std": 0.1489708483409685
+        },
+        "MFCC 1 Variation (Voiced)": {
+            "mean": 0.27018288055345024,
+            "std": 0.13547377279769135
+        },
+        "MFCC 2 (Voiced Spectral Energy)": {
+            "mean": -7.221315081745099,
+            "std": 8.28383028649732
+        },
+        "MFCC 4 (Overall High-Freq Detail)": {
+            "mean": -12.289785115513533,
+            "std": 5.933628357077625
+        },
+        "MFCC 4 (Voiced High-Freq Detail)": {
+            "mean": -15.470622468468916,
+            "std": 9.17112958100866
+        },
+        "valence": {
+            "mean": 2.7787309315033677,
+            "std": 0.8872411441979634
+        },
+        "arousal": {
+            "mean": 3.0814376413775575,
+            "std": 0.7074105745355708
+        },
+        "dominance": {
+            "mean": 3.197377900622697,
+            "std": 0.7868077583987892
+        }
+    },
+    "F": {
+        "Average Pitch": {
+            "mean": 37.01832628899573,
+            "std": 3.7889006594903263
+        },
+        "Pitch Stability (StdDev)": {
+            "mean": 0.10313086405889423,
+            "std": 0.05121152830977945
+        },
+        "Pitch Range (Dynamic Range)": {
+            "mean": 6.158643073969096,
+            "std": 4.022678750233985
+        },
+        "Average Loudness": {
+            "mean": 0.3487594209397399,
+            "std": 0.29638504898850476
+        },
+        "Overall Sound Level (dBP)": {
+            "mean": -34.874300325086274,
+            "std": 8.985782936392908
+        },
+        "Loudness Variation (StdDev)": {
+            "mean": 0.735048230021237,
+            "std": 0.19325186116528092
+        },
+        "Avg. Loudness Increase Slope": {
+            "mean": 4.791815280424741,
+            "std": 4.494405618057632
+        },
+        "Loudness Decrease Variability": {
+            "mean": 2.281383638151428,
+            "std": 2.1138206721405495
+        },
+        "Speaking Rate": {
+            "mean": 2.128535023544338,
+            "std": 0.9213320771543895
+        },
+        "Unvoiced Length Variation (Pause/Consonant Variability)": {
+            "mean": 0.2634035716878179,
+            "std": 0.1913317529783209
+        },
+        "Jitter (Voice Roughness)": {
+            "mean": 0.02994453083327098,
+            "std": 0.01320395438763826
+        },
+        "Shimmer (Voice Breathiness)": {
+            "mean": 1.1833997565251069,
+            "std": 0.25136578203898197
+        },
+        "Harmonics-to-Noise Ratio (Voice Clarity)": {
+            "mean": 7.613542681792201,
+            "std": 1.643402572542616
+        },
+        "Hammarberg Variation (Breathiness Stability)": {
+            "mean": 0.36774552752270295,
+            "std": 0.11996552065332271
+        },
+        "Alpha Ratio (Spectral Balance - Voiced)": {
+            "mean": -11.196509901411753,
+            "std": 4.10544483961334
+        },
+        "Alpha Ratio (Spectral Balance - Unvoiced)": {
+            "mean": -9.555522902692061,
+            "std": 2.7624489686370275
+        },
+        "Low Freq Spectral Slope (Voiced)": {
+            "mean": 0.03708366921670352,
+            "std": 0.014810650107158811
+        },
+        "Low Freq Spectral Slope (Unvoiced)": {
+            "mean": 0.007812419643718291,
+            "std": 0.012645897957194412
+        },
+        "Overall Spectral Flux Variation": {
+            "mean": 0.99982052169631,
+            "std": 0.315098583421521
+        },
+        "Spectral Flux Variation (Voiced)": {
+            "mean": 0.666689961011752,
+            "std": 0.23881730216946936
+        },
+        "F1 Frequency (Vowel Openness)": {
+            "mean": 706.65051860844,
+            "std": 74.08074395687042
+        },
+        "F1 Amplitude (Relative to Pitch)": {
+            "mean": -123.85659169790283,
+            "std": 35.96371031451394
+        },
+        "MFCC 1 (Overall Spectral Shape)": {
+            "mean": 25.1618311765596,
+            "std": 3.8807507197293756
+        },
+        "MFCC 1 (Voiced Spectral Shape)": {
+            "mean": 28.86665531383547,
+            "std": 5.675194833484147
+        },
+        "MFCC 1 Variation (Overall)": {
+            "mean": 0.3730901469036368,
+            "std": 0.14715073232806067
+        },
+        "MFCC 1 Variation (Voiced)": {
+            "mean": 0.2970929686541399,
+            "std": 0.15625403148341646
+        },
+        "MFCC 2 (Voiced Spectral Energy)": {
+            "mean": -9.517196142340545,
+            "std": 8.309724472460818
+        },
+        "MFCC 4 (Overall High-Freq Detail)": {
+            "mean": -14.543296522940272,
+            "std": 5.9867384294795105
+        },
+        "MFCC 4 (Voiced High-Freq Detail)": {
+            "mean": -19.716967544872865,
+            "std": 8.291847028653363
+        },
+        "valence": {
+            "mean": 2.740133528006371,
+            "std": 0.9485623676071161
+        },
+        "arousal": {
+            "mean": 3.134479028404566,
+            "std": 0.7460249966488158
+        },
+        "dominance": {
+            "mean": 3.23489060260154,
+            "std": 0.7907575060263737
+        }
+    },
+    "M": {
+        "Average Pitch": {
+            "mean": 28.541827319522987,
+            "std": 5.035990687962558
+        },
+        "Pitch Stability (StdDev)": {
+            "mean": 0.13531496750408656,
+            "std": 0.06725655737722752
+        },
+        "Pitch Range (Dynamic Range)": {
+            "mean": 6.5447701471812145,
+            "std": 4.474697155915663
+        },
+        "Average Loudness": {
+            "mean": 0.31916950547391515,
+            "std": 0.24907704437780953
+        },
+        "Overall Sound Level (dBP)": {
+            "mean": -35.14777459631887,
+            "std": 7.833873929709128
+        },
+        "Loudness Variation (StdDev)": {
+            "mean": 0.716948993165529,
+            "std": 0.1916486845818568
+        },
+        "Avg. Loudness Increase Slope": {
+            "mean": 3.9216476064002923,
+            "std": 3.180779963691891
+        },
+        "Loudness Decrease Variability": {
+            "mean": 2.0457624503066203,
+            "std": 1.6752476434451131
+        },
+        "Speaking Rate": {
+            "mean": 2.0636328212687487,
+            "std": 0.9170278350405735
+        },
+        "Unvoiced Length Variation (Pause/Consonant Variability)": {
+            "mean": 0.29127323896642027,
+            "std": 0.2040109096591242
+        },
+        "Jitter (Voice Roughness)": {
+            "mean": 0.03187463048878205,
+            "std": 0.02085085874227001
+        },
+        "Shimmer (Voice Breathiness)": {
+            "mean": 1.2867964287306273,
+            "std": 0.34442180343090284
+        },
+        "Harmonics-to-Noise Ratio (Voice Clarity)": {
+            "mean": 5.000677877487092,
+            "std": 1.4967117371426037
+        },
+        "Hammarberg Variation (Breathiness Stability)": {
+            "mean": 0.30609259303270225,
+            "std": 0.09796689966696287
+        },
+        "Alpha Ratio (Spectral Balance - Voiced)": {
+            "mean": -12.188974274611752,
+            "std": 3.409413010234659
+        },
+        "Alpha Ratio (Spectral Balance - Unvoiced)": {
+            "mean": -9.426773293629935,
+            "std": 2.82992584758829
+        },
+        "Low Freq Spectral Slope (Voiced)": {
+            "mean": 0.029628239595642734,
+            "std": 0.014087423891108316
+        },
+        "Low Freq Spectral Slope (Unvoiced)": {
+            "mean": 0.005144541987716407,
+            "std": 0.011265216454059984
+        },
+        "Overall Spectral Flux Variation": {
+            "mean": 0.930221819156509,
+            "std": 0.27403140275283383
+        },
+        "Spectral Flux Variation (Voiced)": {
+            "mean": 0.5821141481165479,
+            "std": 0.19994740745688358
+        },
+        "F1 Frequency (Vowel Openness)": {
+            "mean": 581.9697928227195,
+            "std": 86.75062938862007
+        },
+        "F1 Amplitude (Relative to Pitch)": {
+            "mean": -128.04913183227694,
+            "std": 35.013406401130005
+        },
+        "MFCC 1 (Overall Spectral Shape)": {
+            "mean": 26.560203892369575,
+            "std": 3.733655012681127
+        },
+        "MFCC 1 (Voiced Spectral Shape)": {
+            "mean": 32.622130464838946,
+            "std": 5.158189783972215
+        },
+        "MFCC 1 Variation (Overall)": {
+            "mean": 0.39131597340126767,
+            "std": 0.1501120077774783
+        },
+        "MFCC 1 Variation (Voiced)": {
+            "mean": 0.24540998410668796,
+            "std": 0.10722126915201803
+        },
+        "MFCC 2 (Voiced Spectral Energy)": {
+            "mean": -5.107772251435448,
+            "std": 7.67602628270093
+        },
+        "MFCC 4 (Overall High-Freq Detail)": {
+            "mean": -10.22031230425646,
+            "std": 5.068202338953024
+        },
+        "MFCC 4 (Voiced High-Freq Detail)": {
+            "mean": -11.561520927761668,
+            "std": 8.147214481476354
+        },
+        "valence": {
+            "mean": 2.814176182350073,
+            "std": 0.8254609840548401
+        },
+        "arousal": {
+            "mean": 3.032728010726475,
+            "std": 0.6663747429578022
+        },
+        "dominance": {
+            "mean": 3.1629287664553876,
+            "std": 0.7816749864672391
+        }
+    }
+}

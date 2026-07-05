@@ -97,38 +97,37 @@ def main():
     gender_out_csv = temp_dir / "gender_predictions.csv"
     
     run_gender_classifier_inference(
-        input_csv=str(manifest_csv),
-        feature_extractor_path=args.gender_extractor_path,
+        data_path=str(manifest_csv),
+        extractor_path=args.gender_extractor_path,
         model_path=gender_ckpt,
         output_csv=str(gender_out_csv)
     )
 
     # 3. VAD Regressor Inference
     logger.info("--- Step 2/5: Running VAD Regressor ---")
-    vad_out_dir = temp_dir / "vad_predictions"
+    vad_out_path = temp_dir / f"{args.dataset}_vad_predictions.csv"
     if args.use_default_vad_model:
         vad_ckpt = None
     elif args.vad_model_path is None:
         vad_ckpt = os.path.join(args.checkpoint_dir, "VAD_Regressor_checkpoint")
     
-    vad_out_dir.mkdir(parents=True, exist_ok=True)
     vad_out_csv = inference_audeering(
-        feature_extractor_path=args.vad_extractor_path,
-        output_path=str(vad_out_dir),
+        EXTRACTOR_PATH=args.vad_extractor_path,
+        input_data=str(manifest_csv),
+        output_path=str(vad_out_path),
         dataset=args.dataset,
-        generate_oof=False,
         Model_PATH=vad_ckpt
     )
 
     # 4. Combine and split into test.json (and train.json if applicable)
     logger.info("--- Step 3/5: Extracting eGemaps Features and Combining files---")
     feature_output_csv=str(temp_dir / "egemaps_features.csv")
-    combined_csv = extract_feature_opensmile(dataset=args.dataset, feature_extraction_input_csv=str(manifest_csv), output_csv=feature_output_csv)
+    combined_csv = extract_feature_opensmile(dataset=args.dataset, data_path=str(manifest_csv), output_csv=feature_output_csv)
     combine_file_to_json(
         original_csv=str(feature_output_csv),
-        gender_output_csv=str(gender_out_csv),
-        vad_output_csv=str(vad_out_csv),
-        combined_output_path=str(temp_dir)
+        gender_pred_csv=str(gender_out_csv),
+        vad_pred_csv=str(vad_out_csv),
+        output_path=str(temp_dir)
     )
 
     # 5. ASR Speech-to-Text

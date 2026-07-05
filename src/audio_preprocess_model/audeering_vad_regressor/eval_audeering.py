@@ -8,6 +8,7 @@ from torch.utils.data import Dataset, DataLoader
 from transformers import Wav2Vec2Processor, Wav2Vec2PreTrainedModel, Wav2Vec2Model
 from tqdm import tqdm
 from scipy.stats import pearsonr
+import os 
 
 # --- CONFIGURATION ---
 # MODEL_PATH = "audeering/wav2vec2-large-robust-12-ft-emotion-msp-dim"
@@ -124,6 +125,43 @@ class EvalDataset(Dataset):
             
         return batch_item
 
+class InferenceDataset(Dataset):
+    def __init__(self, dataset, input_data, processor):
+        self.processor = processor
+        self.sr = 16000
+        
+        # 1. Direct structural adaptation for CSV or JSON
+        if input_data.endswith('.csv'):
+            df = pd.read_csv(input_data)
+            self.data = df.to_dict(orient='records')
+        else:
+            with open(input_data, 'r') as f:
+                self.data = json.load(f)
+        
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        item = self.data[idx]
+        
+        # Fallbacks match EvalDataset patterns (checking for common structural tags)
+        id = item.get('id', item.get('file'))
+        path = item.get('path', item.get('audio_filepath'))
+
+        # LOAD AUDIO
+        audio, _ = librosa.load(path, sr=self.sr)
+        
+        # Process
+        inputs = self.processor(audio, sampling_rate=self.sr, return_tensors="pt")
+        
+        batch_item = {
+            "input_values": inputs.input_values[0],
+            "path": path, 
+            "id": id
+        }
+            
+        return batch_item
+            
 def collate_fn(EXTRACTOR_PATH, batch):
     # Custom collate to handle padding
     processor = Wav2Vec2Processor.from_pretrained(EXTRACTOR_PATH)
@@ -260,69 +298,54 @@ def evaluate_audeering(EXTRACTOR_PATH, data_path, dataset, generate_oof=True, Mo
     
     return vad_output_file
 
-def inference_audeering(EXTRACTOR_PATH, data_path, dataset, generate_oof=True, Model_PATH=None):
-    vad_output_file = f"{data_path}/{dataset}_vad_predictions.csv"
-    if generate_oof and Model_PATH is not None:
-        raise ValueError("Cannot generate OOF predictions when a specific model path is provided.")
-    
-    if generate_oof:
-        ses_list = range(1,6)
+def inference_audeering(EXTRACTOR_PATH, input_data, output_path, dataset, Model_PATH=None):    
+    if Model_PATH is None:
+        MODEL_PATH = f"../checkpoints/wav2vec2_vad_{dataset}_final_model_ses5"
     else:
-        ses_list = [5]
-    all_sessions_dfs = []
-    for ses in ses_list:
-        if Model_PATH is None:
-            MODEL_PATH = f"../checkpoints/wav2vec2_vad_{dataset}_final_model_ses{ses}"
-        else:
-            MODEL_PATH = Model_PATH
-        TEST_FILE = f"{data_path}/test_vad_ready_sess{ses}.json"    # Path to your processed test json
-        
-        print(f"Loading model from {MODEL_PATH}...")
-        processor = Wav2Vec2Processor.from_pretrained(EXTRACTOR_PATH)
-        model = EmotionModel.from_pretrained(MODEL_PATH).to(DEVICE)
-        model.eval()
-
-        print(f"Loading test data from {TEST_FILE}...")
-        custom_dataset = EvalDataset(dataset, TEST_FILE, processor)
-        dataloader = DataLoader(custom_dataset, batch_size=BATCH_SIZE, collate_fn=lambda b: collate_fn(EXTRACTOR_PATH, b))
-
-        # Storage for results
-        all_ids = []
-        all_preds = []
-        all_paths = []
-
-        print("Running Inference...")
-        with torch.no_grad():
-            for batch in tqdm(dataloader):
-                input_values = batch["input_values"].to(DEVICE)
-                attention_mask = batch["attention_mask"].to(DEVICE)
-                paths = batch["paths"]
-                ids = batch["ids"]
-                # Forward pass
-                logits = model(input_values, attention_mask=attention_mask)
-                preds = logits.cpu().numpy()
-
-                all_preds.append(preds)
-                all_paths.extend(paths)
-                all_ids.extend(ids)
-                
-        # Concatenate all batches
-        all_preds = np.vstack(all_preds)
-
+        MODEL_PATH = Model_PATH
     
-        # 6. SAVE PREDICTIONS TO CSV
-        df = pd.DataFrame({
-            "session": ses,
-            "id": all_ids,
-            "path": all_paths,
-            "pred_arousal": all_preds[:, 0],
-            "pred_dominance": all_preds[:, 1],
-            "pred_valence": all_preds[:, 2]
-        })
-        all_sessions_dfs.append(df)
-    
-    full_df = pd.concat(all_sessions_dfs, ignore_index=True)    
-    full_df.to_csv(vad_output_file, index=False)
+    print(f"Loading model from {MODEL_PATH}...")
+    processor = Wav2Vec2Processor.from_pretrained(EXTRACTOR_PATH)
+    model = EmotionModel.from_pretrained(MODEL_PATH).to(DEVICE)
+    model.eval()
+
+    print(f"Loading test data from {input_data}...")
+    custom_dataset = InferenceDataset(dataset, input_data, processor)
+    dataloader = DataLoader(custom_dataset, batch_size=BATCH_SIZE, collate_fn=lambda b: collate_fn(EXTRACTOR_PATH, b))
+
+    # Storage for results
+    all_ids = []
+    all_preds = []
+    all_paths = []
+
+    print("Running Inference...")
+    with torch.no_grad():
+        for batch in tqdm(dataloader):
+            input_values = batch["input_values"].to(DEVICE)
+            attention_mask = batch["attention_mask"].to(DEVICE)
+            paths = batch["paths"]
+            ids = batch["ids"]
+            # Forward pass
+            logits = model(input_values, attention_mask=attention_mask)
+            preds = logits.cpu().numpy()
+
+            all_preds.append(preds)
+            all_paths.extend(paths)
+            all_ids.extend(ids)
+            
+    # Concatenate all batches
+    all_preds = np.vstack(all_preds)
+
+
+    # 6. SAVE PREDICTIONS TO CSV
+    df = pd.DataFrame({
+        "id": all_ids,
+        "path": all_paths,
+        "pred_arousal": all_preds[:, 0],
+        "pred_dominance": all_preds[:, 1],
+        "pred_valence": all_preds[:, 2]
+    })    
+    df.to_csv(output_path, index=False)
     
     print("\npredictions saved")
-    return vad_output_file
+    return output_path

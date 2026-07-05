@@ -1,20 +1,42 @@
 import pandas as pd
 import os
 import numpy as np
-from configs.dataset_config import FEATURE_RENAMING_MAPS, DATASET_PROMPT_GROUPS, EXTRACTED_FEATURE_SET, PRECOMPUTED_THRESHOLDS, PRECOMPUTED_STATS
+from configs.dataset_config import FEATURE_RENAMING_MAPS, DATASET_PROMPT_GROUPS, EXTRACTED_FEATURE_SET
+import json
 
 def extract_thresholds_and_stats(df, dataset, num_classes, compute_manual=True):
     if not compute_manual:
-        if dataset not in PRECOMPUTED_THRESHOLDS:
-            raise ValueError(
-                f"Precomputed thresholds missing for dataset '{dataset}' in configs.dataset_config"
+        THRESHOLDS_PATH = f"configs/precomputed/{dataset}_thresholds.json"
+        STATS_PATH = f"configs/precomputed/{dataset}_stats.json"
+
+        if not os.path.exists(THRESHOLDS_PATH) or not os.path.exists(STATS_PATH):
+            raise FileNotFoundError(
+                f"Precomputed files missing for dataset '{dataset}'. "
+                f"Expected paths:\n  - {THRESHOLDS_PATH}\n  - {STATS_PATH}\n"
+                f"Please run with `compute_manual=True` first to generate them."
             )
-        if dataset not in PRECOMPUTED_STATS:
+
+        try:
+            # Load them dynamically if they exist
+            if os.path.exists(THRESHOLDS_PATH):
+                with open(THRESHOLDS_PATH, "r") as f:
+                    thresholds = json.load(f)
+
+            if os.path.exists(STATS_PATH):
+                with open(STATS_PATH, "r") as f:
+                    stats = json.load(f)
+        except json.JSONDecodeError as e:
             raise ValueError(
-                f"Precomputed stats missing for dataset '{dataset}' in configs.dataset_config"
-            )
-            
-        return PRECOMPUTED_THRESHOLDS[dataset], PRECOMPUTED_STATS[dataset]
+                f"Failed to parse precomputed JSON files for '{dataset}'. "
+                f"The files might be corrupted or empty. Error detail: {e}"
+            ) from e
+        except Exception as e:
+            raise RuntimeError(
+                f"An unexpected error occurred while loading precomputed data: {e}"
+            ) from e
+
+        return thresholds, stats
+
     
     features = EXTRACTED_FEATURE_SET[dataset]
     thresholds = {}
@@ -82,7 +104,7 @@ def standardize_and_process_df(df, thresholds, stats, num_classes, use_pred_gend
             if not pd.isna(gender_prob) and 0.2 <= gender_prob <= 0.8:
                 return 'overall'
             
-            key = row.get('pred_gender', np.nan)
+            key = row.get('gender_pred', np.nan)
             else:
                 key = row.get('gender', np.nan)
             
@@ -129,7 +151,7 @@ def add_conversation_history(df, window_size=8, use_pred_gender=False, use_asr_p
     # 2. Iterate through each distinct conversation
     for conversation_id, group in df.groupby('video_id', sort=False):
         if use_pred_gender:
-            speakers = group['pred_gender'].astype(str).tolist()
+            speakers = group['gender_pred'].astype(str).tolist()
         else:
             speakers = group['gender'].astype(str).tolist()
 
@@ -188,7 +210,7 @@ def add_one_line_convo(processed_df, use_pred_gender=False, use_asr_pred=False):
     prefix = "The following noted between \'### ###\' is a single isolated utterance with its speech features attached. ### "
     
     if use_pred_gender:
-        gender_str = processed_df['pred_gender'].astype(str)
+        gender_str = processed_df['gender_pred'].astype(str)
     
     else:
         gender_str = processed_df['gender'].astype(str)
@@ -203,7 +225,7 @@ def add_one_line_convo(processed_df, use_pred_gender=False, use_asr_pred=False):
     processed_df['history_context'] = (
         prefix + 
         "\t Speaker_" + gender_str + ": " + 
-         + text_str +
+        text_str +
         " (" + processed_df['Average Pitch_category'] + " pitch with " + 
         processed_df['Pitch Stability (StdDev)_category'] + " variation)  ### \n"
     )
@@ -224,7 +246,7 @@ def add_conversation_history_custom_dataset(
       df (pd.DataFrame): Input dataframe.
       id_col (str): Column containing IDs formatted as 'videoID_uttrID' (e.g., 'conv1_0', 'conv1_1').
       window_size (int): Max previous utterances to include in context.
-      use_pred_gender (bool): Whether to use 'pred_gender' instead of 'gender'.
+      use_pred_gender (bool): Whether to use 'gender_pred' instead of 'gender'.
       use_asr_pred (bool): Whether to use 'hypothesis' instead of 'text'.
     """
     
@@ -250,8 +272,8 @@ def add_conversation_history_custom_dataset(
     # 3. Iterate through each distinct conversation
     for conversation_id, group in df.groupby('_temp_video_id', sort=False):
         # Resolve speakers
-        if use_pred_gender and 'pred_gender' in group:
-            speakers = group['pred_gender'].astype(str).tolist()
+        if use_pred_gender and 'gender_pred' in group:
+            speakers = group['gender_pred'].astype(str).tolist()
         else:
             speakers = group['gender'].astype(str).tolist()
 
@@ -321,15 +343,15 @@ def prepare_and_save_json(df, dataset, output_path, use_asr_pred=False):
     final_columns['history_context'] = 'history_context'
     
     if 'pred_valence' in df.columns: 
-        df.drop(columns=['valence'], inplace=True)
+        df.drop(columns=['valence'], inplace=True, errors='ignore')
         final_columns['pred_valence'] = 'valence'
         
     if 'pred_arousal' in df.columns: 
-        df.drop(columns=['arousal'], inplace=True)
+        df.drop(columns=['arousal'], inplace=True, errors='ignore')
         final_columns['pred_arousal'] = 'arousal'
         
     if 'pred_dominance' in df.columns:
-        df.drop(columns=['dominance'], inplace=True)
+        df.drop(columns=['dominance'], inplace=True, errors='ignore')
         final_columns['pred_dominance'] = 'dominance'
     
     # 2b. Add Acoustic columns (and ensure they exist)
@@ -364,9 +386,15 @@ def prepare_and_save_json(df, dataset, output_path, use_asr_pred=False):
         'fru': 'frustrated',
         'frustrated': 'frustrated',
     }
-    df['emotion'] = df['emotion'].map(iemocap_to_target) 
-    
-    export_df = df[list(final_columns.keys())].rename(columns=final_columns)
+    if 'emotion' in df.columns:
+        df['emotion'] = df['emotion'].map(iemocap_to_target)
+        
+    # export_df = df[list(final_columns.keys())].rename(columns=final_columns)
+    # Filter keys to only those present in df
+    existing_keys = [col for col in final_columns.keys() if col in df.columns]
+
+    # Slice using existing keys, then rename using the original map
+    export_df = df[existing_keys].rename(columns=final_columns)
     
     export_df.to_json(
         output_path, 
@@ -435,5 +463,5 @@ def process_custom_audio_feature(dataset, output_path, use_pred_gender=True, use
         processed_df = add_one_line_convo(processed_df, use_pred_gender=True, use_asr_pred=True)
 
     # Create a new DataFrame with only the desired columns
-    prepare_and_save_json(processed_df, dataset, test_json)
+    prepare_and_save_json(processed_df, dataset, test_json, use_asr_pred=True)
 
