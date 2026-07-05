@@ -240,7 +240,9 @@ def add_conversation_history_custom_dataset(
     use_asr_pred=False
 ):
     """
-    Creates a 'history_context' for custom datasets based on an ID column formatted as 'videoID_uttrID'.
+    Creates a 'history_context' for custom datasets by detecting and using 
+    'video_id' and 'Order_Index' if they exist. Otherwise, falls back to parsing 
+    the ID column formatted as 'videoID_uttrID'.
     
     Parameters:
       df (pd.DataFrame): Input dataframe.
@@ -250,27 +252,34 @@ def add_conversation_history_custom_dataset(
       use_asr_pred (bool): Whether to use 'hypothesis' instead of 'text'.
     """
     
-    # 1. Parse video_id and uttr_id using the LAST occurrence of '_'
-    # expand=True returns a DataFrame with 2 columns: [video_id, uttr_id]
-    extracted_ids = df[id_col].astype(str).str.rsplit('_', n=1, expand=True)
-    
-    df['_temp_video_id'] = extracted_ids[0]
-    
-    # Safely convert uttr_id to integers for correct numerical sorting (e.g., '10' after '9', not after '1')
-    # If conversion fails (e.g., alphanumeric IDs like 'uttr1'), fallback to string sorting
-    try:
-        df['_temp_uttr_order'] = pd.to_numeric(extracted_ids[1])
-    except (ValueError, TypeError):
-        df['_temp_uttr_order'] = extracted_ids[1]
+    if 'video_id' in df.columns and 'Order_Index' in df.columns:
+        print("--> Found 'video_id' and 'Order_Index'. Using explicit sorting.")
+        group_col = 'video_id'
+        df = df.sort_values(by=['video_id', 'Order_Index'])
+    else:
+        # 1. Parse video_id and uttr_id using the LAST occurrence of '_'
+        # expand=True returns a DataFrame with 2 columns: [video_id, uttr_id]
+        print(f"--> Explicit columns not found. Parsing {id_col} ('videoID_uttrID') structure.")
+        group_col = '_temp_video_id'
+        extracted_ids = df[id_col].astype(str).str.rsplit('_', n=1, expand=True)
+        
+        df['_temp_video_id'] = extracted_ids[0]
+        
+        # Safely convert uttr_id to integers for correct numerical sorting (e.g., '10' after '9', not after '1')
+        # If conversion fails (e.g., alphanumeric IDs like 'uttr1'), fallback to string sorting
+        try:
+            df['_temp_uttr_order'] = pd.to_numeric(extracted_ids[1])
+        except (ValueError, TypeError):
+            df['_temp_uttr_order'] = extracted_ids[1]
 
-    # 2. Sort to ensure strict temporal order within each dialogue
-    df = df.sort_values(by=['_temp_video_id', '_temp_uttr_order'])
+        # 2. Sort to ensure strict temporal order within each dialogue
+        df = df.sort_values(by=['_temp_video_id', '_temp_uttr_order'])
     
     # Initialize output column
     df['history_context'] = ""
     
     # 3. Iterate through each distinct conversation
-    for conversation_id, group in df.groupby('_temp_video_id', sort=False):
+    for conversation_id, group in df.groupby(group_col, sort=False):
         # Resolve speakers
         if use_pred_gender and 'gender_pred' in group:
             speakers = group['gender_pred'].astype(str).tolist()
@@ -322,7 +331,8 @@ def add_conversation_history_custom_dataset(
             df.at[row_idx, 'history_context'] = "\t " + "\t ".join(lines)
 
     # 4. Clean up temporary sorting columns
-    df = df.drop(columns=['_temp_video_id', '_temp_uttr_order'])
+    if group_col == '_temp_video_id':
+        df = df.drop(columns=['_temp_video_id', '_temp_uttr_order'], errors='ignore')
 
     return df
 
@@ -348,15 +358,15 @@ def prepare_and_save_json(df, dataset, output_path, use_asr_pred=False):
 
     if 'pred_valence' in df.columns: 
         #df.drop(columns=['valence'], inplace=True, errors='ignore')
-        final_columns['pred_valence'] = 'valence'
+        final_columns['pred_valence'] = 'pred_valence'
         
     if 'pred_arousal' in df.columns: 
         #df.drop(columns=['arousal'], inplace=True, errors='ignore')
-        final_columns['pred_arousal'] = 'arousal'
+        final_columns['pred_arousal'] = 'pred_arousal'
         
     if 'pred_dominance' in df.columns:
         #df.drop(columns=['dominance'], inplace=True, errors='ignore')
-        final_columns['pred_dominance'] = 'dominance'
+        final_columns['pred_dominance'] = 'pred_dominance'
     
     # 2b. Add Acoustic columns (and ensure they exist)
     for group, features in group_order.items():
