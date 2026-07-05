@@ -71,22 +71,28 @@ def get_labels_attr(dataset):
         'msp': "'angry', 'frustrated', 'disgust', 'annoyed', 'sad', 'depressed', 'disappointed', 'fear', 'happy', 'surprise', 'excited', 'contempt', 'amused', 'concerned', 'confused', 'neutral'"
     }
 
-    emotional_label_dict = {text_label:num_label for num_label, text_label in enumerate(label_list_set[dataset])}
+    labels = label_list_set[dataset]
+    if 'unknown' not in labels:
+        labels.append('unknown')
+
+    emotional_label_dict = {text_label:num_label for num_label, text_label in enumerate(labels)}
+
     emotional_label_str = label_str_set[dataset]
     return emotional_label_dict, emotional_label_str
 
 
 def report_score(dataset, golds, preds, mode='test'):
     if dataset == 'iemocap':
-        target_names = ['hap', 'sad', 'neu', 'ang', 'exc', 'fru']
-        digits = 6
+        target_names = ['hap', 'sad', 'neu', 'ang', 'exc', 'fru','unknown']
+        digits = 7
     elif dataset == 'msp':
         target_names = [
             "angry", "frustrated", "disgust", "annoyed", "sad",
             "depressed", "disappointed", "fear", "happy", "surprise",
-            "excited", "contempt", "amused", "concerned", "confused", "neutral"
+            "excited", "contempt", "amused", "concerned", "confused", "neutral",
+            "unknown"
         ] 
-        digits = 16
+        digits = 17
 
     res = {}
     res['Acc_SA'] = accuracy_score(golds, preds)
@@ -96,7 +102,7 @@ def report_score(dataset, golds, preds, mode='test'):
         if isinstance(v, float):
             res[k] = round(v * 100, 3)
 
-    res_matrix = metrics.classification_report(golds, preds, target_names=target_names, digits=digits)
+    res_matrix = metrics.classification_report(golds, preds, labels=list(range(len(target_names))), target_names=target_names, digits=digits, zero_division=0)
 
     return res, res_matrix     
     
@@ -1051,19 +1057,23 @@ if __name__ == "__main__":
                 
             preds_for_eval.append(this_eval_instance)
 
+        unknown_id = emotional_label_dict.get('unknown', len(emotional_label_dict) - 1)
+        valid_label_keys = [k for k in emotional_label_dict.keys() if k != 'unknown']
+        
         preds = []
         golds = []
         confuse_case = []
         if has_targets:
             for index, answer in enumerate(all_answers):
-                golds += [emotional_label_dict[targets[index]]]
-                match_res = match_text(answer, list(emotional_label_dict.keys()))
+                raw_target = targets[index]
+                golds.append(emotional_label_dict.get(raw_target, unknown_id))
+                match_res = match_text(answer, valid_label_keys)
                 if match_res:
                     preds += [emotional_label_dict[match_res[0]]]
                 else:
-                    # preds += [confuse_index]
-                    preds += [emotional_label_dict[optimize_output(answer, list(emotional_label_dict.keys()))]]
-                    confuse_case += [index]
+                    optimized_label = optimize_output(answer, valid_label_keys)
+                    preds.append(emotional_label_dict.get(optimized_label, unknown_id))
+                    confuse_case.append(index)
             
             if len(preds) == len(all_answers):
                 score, res_matrix = report_score(dataset=args.dataset, golds=golds, preds=preds)
