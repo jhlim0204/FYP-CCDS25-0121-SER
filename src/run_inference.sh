@@ -60,8 +60,22 @@ source activate venv_llm
 # Set model context length matching main_llm.sh logic
 if [ "$DATASET" == "iemocap" ]; then
     MAX_LENGTH=2500
+    LORA_LR=1e-4
+    LORA_DIM=16
+    LORA_ALPHA=16
+    LORA_DROPOUT_PROB=0.05
+    MAX_MASK_PROB=0.0
+    historical_window=8
+
 elif [ "$DATASET" == "msp" ]; then
     MAX_LENGTH=2048
+    LORA_LR=1e-5
+    LORA_DIM=32
+    LORA_ALPHA=32
+    LORA_DROPOUT_PROB=0.1
+    MAX_MASK_PROB=0.1
+    historical_window=0
+
 else
     echo "Error: Invalid dataset '$DATASET'. Must be 'iemocap' or 'msp'."
     exit 1

@@ -342,16 +342,20 @@ def prepare_and_save_json(df, dataset, output_path, use_asr_pred=False):
     final_columns['path'] = 'path'
     final_columns['history_context'] = 'history_context'
     
+    if 'valence' in df.columns: final_columns['valence'] = 'valence'
+    if 'arousal' in df.columns: final_columns['arousal'] = 'arousal'
+    if 'dominance' in df.columns: final_columns['dominance'] = 'dominance'
+
     if 'pred_valence' in df.columns: 
-        df.drop(columns=['valence'], inplace=True, errors='ignore')
+        #df.drop(columns=['valence'], inplace=True, errors='ignore')
         final_columns['pred_valence'] = 'valence'
         
     if 'pred_arousal' in df.columns: 
-        df.drop(columns=['arousal'], inplace=True, errors='ignore')
+        #df.drop(columns=['arousal'], inplace=True, errors='ignore')
         final_columns['pred_arousal'] = 'arousal'
         
     if 'pred_dominance' in df.columns:
-        df.drop(columns=['dominance'], inplace=True, errors='ignore')
+        #df.drop(columns=['dominance'], inplace=True, errors='ignore')
         final_columns['pred_dominance'] = 'dominance'
     
     # 2b. Add Acoustic columns (and ensure they exist)

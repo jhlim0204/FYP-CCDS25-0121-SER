@@ -173,24 +173,6 @@
             "low": -22.087725,
             "medium": -8.57651325,
             "high": -3.7752485
-        },
-        "valence": {
-            "very_low": 1.5,
-            "low": 2.0,
-            "medium": 3.5,
-            "high": 4.0
-        },
-        "arousal": {
-            "very_low": 2.0,
-            "low": 2.5,
-            "medium": 3.5,
-            "high": 4.0
-        },
-        "dominance": {
-            "very_low": 2.0,
-            "low": 2.5,
-            "medium": 4.0,
-            "high": 4.5
         }
     },
     "F": {
@@ -367,24 +349,6 @@
             "low": -25.27354625,
             "medium": -14.4444905,
             "high": -8.790217699999982
-        },
-        "valence": {
-            "very_low": 1.5,
-            "low": 2.0,
-            "medium": 3.5,
-            "high": 4.0
-        },
-        "arousal": {
-            "very_low": 2.0,
-            "low": 2.5,
-            "medium": 3.5,
-            "high": 4.0
-        },
-        "dominance": {
-            "very_low": 2.3333,
-            "low": 2.5,
-            "medium": 4.0,
-            "high": 4.5
         }
     },
     "M": {
@@ -561,24 +525,6 @@
             "low": -16.3899785,
             "medium": -5.768745,
             "high": -2.199432279999999
-        },
-        "valence": {
-            "very_low": 2.0,
-            "low": 2.0,
-            "medium": 3.5,
-            "high": 4.0
-        },
-        "arousal": {
-            "very_low": 2.0,
-            "low": 2.5,
-            "medium": 3.5,
-            "high": 4.0
-        },
-        "dominance": {
-            "very_low": 2.0,
-            "low": 2.5,
-            "medium": 3.5,
-            "high": 4.0
         }
     }
 }
