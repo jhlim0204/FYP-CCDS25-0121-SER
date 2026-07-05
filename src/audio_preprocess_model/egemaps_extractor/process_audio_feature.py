@@ -105,8 +105,8 @@ def standardize_and_process_df(df, thresholds, stats, num_classes, use_pred_gend
                 return 'overall'
             
             key = row.get('gender_pred', np.nan)
-            else:
-                key = row.get('gender', np.nan)
+        else:
+            key = row.get('gender', np.nan)
             
         if pd.isna(key) or key not in stats:
             return 'overall'
