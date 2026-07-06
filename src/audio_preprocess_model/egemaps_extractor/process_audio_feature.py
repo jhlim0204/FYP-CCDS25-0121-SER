@@ -401,7 +401,7 @@ def prepare_and_save_json(df, dataset, output_path, use_asr_pred=False):
         'frustrated': 'frustrated',
     }
     if 'emotion' in df.columns:
-        df['emotion'] = df['emotion'].map(iemocap_to_target)
+        df['emotion'] = df['emotion'].map(iemocap_to_target).fillna(df['emotion'])
         
     # export_df = df[list(final_columns.keys())].rename(columns=final_columns)
     # Filter keys to only those present in df
