@@ -545,11 +545,14 @@ class DynamicPromptCollator:
 
                     if self.mode == 'dev' or random.random() < vad_mask_prob:
                         raw_val = float(item[pred_key])
+                        raw_val = raw_val * (max_VAD - 1) + 1
                     else:
                         base_val = float(item[key])
                         noise = random.choice([-0.2, -0.1, 0.0, 0.1, 0.2])
-                        raw_val = base_val + noise 
-                        raw_val = max(1.0, min(max_VAD, raw_val))
+                        scaled_val = base_val * (max_VAD - 1) + 1
+                        raw_val = scaled_val + noise 
+                    
+                    raw_val = max(1.0, min(max_VAD, raw_val))
 
                         # Apply Masking Logic (Same as acoustics)
                     if self.mode == 'train' and random.random() < mask_prob:
