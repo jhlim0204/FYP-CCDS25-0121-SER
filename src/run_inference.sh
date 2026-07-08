@@ -40,7 +40,7 @@ echo "========================================================================"
 # STEP 1: AUDIO PREPROCESSING (venv_audio)
 # ==============================================================================
 echo -e "\n---> [1/2] Activating audio environment and running feature extraction..."
-source activate venv_audio
+#source activate venv_audio
 
 python preprocess_inference.py \
     --input_path "$INPUT_PATH" \
@@ -50,7 +50,7 @@ python preprocess_inference.py \
     --use_pred_gender \
     --use_asr_pred \
     --with_history $WITH_HISTORY
-
+exit
 # ==============================================================================
 # STEP 2: LLM CONTEXTUAL EVALUATION (venv_llm)
 # ==============================================================================
