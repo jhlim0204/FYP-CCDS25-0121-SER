@@ -121,6 +121,49 @@ bash src/main_llm.sh "msp" "inference"
 
 ---
 
+## Serve over HTTP (`/detect`)
+
+A thin FastAPI wrapper (`src/api_endpoint.py`) exposes the end-to-end inference
+pipeline as an HTTP endpoint, matching the ots-vad / ots-lid / ots-sed service
+family. It does **not** import the heavy audio/LLM deps itself — it shells out
+to `run_inference.sh`, which activates `venv_audio` and `venv_llm` internally.
+So run the server from a lightweight environment:
+
+``` bash
+pip install -r requirements_api.txt
+cd src
+uvicorn api_endpoint:app --host 0.0.0.0 --port 8000
+```
+
+`POST /detect` — multipart upload of a single WAV. Query parameters:
+
+| Param            | Default                                  | Description                                             |
+| ---------------- | ---------------------------------------- | ------------------------------------------------------- |
+| `dataset`        | *(required)*                             | `iemocap` or `msp` — selects the feature set, prompt, label space, and checkpoints |
+| `with_history`   | `false`                                  | include historical dialogue context in the LLM prompt   |
+| `checkpoint_dir` | `../checkpoints/<dataset>_checkpoints`   | override the checkpoint directory                       |
+
+``` bash
+curl -s -F 'file=@sample.wav' \
+  'http://localhost:8000/detect?dataset=iemocap' | python -m json.tool
+```
+
+Health check at `GET /health`.
+
+**Caveats (to be revisited with the PO):**
+
+- **Checkpoints required.** `<dataset>_checkpoints/` must contain
+  `Gender_Classifier_checkpoint`, `VAD_Regressor_checkpoint`, and
+  `LLM_checkpoint`. Without them the pipeline exits non-zero and `/detect`
+  returns `500` with the stderr tail.
+- **Eval-oriented output.** Stage 2 was written to evaluate labeled test sets;
+  the accuracy/F1 numbers it computes are meaningless for a single unlabeled
+  clip. The wrapper returns only the per-utterance predicted emotion. Running
+  on unlabeled audio may need a follow-up patch to `LLM_code/main.py` if it
+  errors on missing ground-truth targets.
+
+---
+
 ## Acknowledgements & Credits
 This project is an evolution of the SpeechCueLLM framework.
 

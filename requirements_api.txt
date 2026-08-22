@@ -1,0 +1,4 @@
+# Dependencies for the HTTP wrapper
+fastapi
+uvicorn[standard]
+python-multipart
