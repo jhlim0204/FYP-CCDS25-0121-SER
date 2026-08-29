@@ -32,6 +32,7 @@ MODEL_VERSION = "meta-llama/Meta-Llama-3-8B-Instruct+lora"
 SCRIPT_DIR = Path(__file__).resolve().parent
 INFERENCE_SCRIPT = SCRIPT_DIR / "run_inference.sh"
 SUPPORTED_DATASETS = ("iemocap", "msp")
+DEFAULT_DATASET = "iemocap"  # used when the caller omits `dataset` (only iemocap in use for now)
 
 # The pipeline is single-flight: fixed CUDA device + DeepSpeed master port.
 _pipeline_lock = threading.Lock()
@@ -122,10 +123,17 @@ def health():
 
 @app.post("/detect", response_model=SerResult)
 def detect(
-    file: UploadFile = File(..., description="audio file (single WAV)"),
-    dataset: str = Query(
+    files: UploadFile = File(
         ...,
-        description="which trained model/feature set/label space to use; required (iemocap or msp)",
+        description="audio file (single WAV). Field name is `files` to match the "
+        "ots-vad / ots-lid / ots-sed multipart contract used by ots-pipeline.",
+    ),
+    dataset: Optional[str] = Query(
+        None,
+        description=(
+            "which trained model/feature set/label space to use (iemocap or msp); "
+            f"optional, defaults to {DEFAULT_DATASET!r} when omitted"
+        ),
     ),
     with_history: bool = Query(
         False,
@@ -136,7 +144,9 @@ def detect(
         description="override the checkpoint directory (defaults to ../checkpoints/<dataset>_checkpoints)",
     ),
 ):
-    if dataset not in SUPPORTED_DATASETS:
+    if dataset is None:
+        dataset = DEFAULT_DATASET
+    elif dataset not in SUPPORTED_DATASETS:
         raise HTTPException(
             status_code=422,
             detail=f"dataset must be one of {SUPPORTED_DATASETS}, got {dataset!r}",
@@ -156,10 +166,10 @@ def detect(
 
     run_id = f"{CLASSIFIER_ID}_{datetime.now(timezone.utc).strftime('%Y%m%d')}_{uuid.uuid4().hex[:3]}"
     created_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
-    audio_file_id = file.filename or f"audio_{uuid.uuid4().hex[:8]}"
+    audio_file_id = files.filename or f"audio_{uuid.uuid4().hex[:8]}"
 
     work_dir = Path(tempfile.mkdtemp(prefix="ser_detect_"))
-    suffix = os.path.splitext(file.filename)[1].lower() if file.filename else ".wav"
+    suffix = os.path.splitext(files.filename)[1].lower() if files.filename else ".wav"
     if suffix != ".wav":
         # prepare_manifest only accepts .wav (or a .csv manifest); reject early.
         _pipeline_lock.release()
@@ -174,7 +184,7 @@ def detect(
 
     try:
         with open(wav_path, "wb") as out_wav:
-            out_wav.write(file.file.read())
+            out_wav.write(files.file.read())
 
         ckpt = checkpoint_dir or str(SCRIPT_DIR.parent / "checkpoints" / f"{dataset}_checkpoints")
 
